@@ -3,22 +3,28 @@ package gui;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
+//import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 
 public class CurrentCalculator extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static int WIDTH = 800;
 	private static int HEIGHT = 600;
 	
-	public JComboBox fromCB, toCB;
+	public JComboBox<String> fromCB, toCB;
 	private JLabel fromL, toL;
 	private JButton calculateB;
+	private JTextArea linksTA;
 	
 	public CurrentCalculator() {
 		setTitle("Current Calculator");
@@ -128,7 +134,7 @@ public class CurrentCalculator extends JFrame{
 		toL = new JLabel("To:");
 		calculateB = new JButton("Calculate");
 		calculateB.addActionListener(new Calculate());
-		
+		linksTA = new JTextArea(6, 30);
 		
 		Container pane = getContentPane();
 		pane.setLayout(null);  
@@ -144,6 +150,9 @@ public class CurrentCalculator extends JFrame{
 		toL.setSize(50, 35);
 		calculateB.setLocation(0, 100);
 		calculateB.setSize(100, 35);
+		linksTA.setLocation(0, 200);
+		linksTA.setSize(600,200);
+		
 		
 		
 		pane.add(fromCB);
@@ -151,6 +160,7 @@ public class CurrentCalculator extends JFrame{
 		pane.add(fromL);
 		pane.add(toL);
 		pane.add(calculateB);
+		pane.add(linksTA);
 		
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -162,9 +172,20 @@ public class CurrentCalculator extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			String from = String.valueOf(fromCB.getSelectedItem());
 			String to = String.valueOf(toCB.getSelectedItem());
-		
-			System.out.println(from);	
-			System.out.println(to);	
+			linksTA.setText("");
+			if(from.equals("Select a Country")) {
+				linksTA.setText("Please select where you are from");
+			} // end of if
+			else if (to.equals("Select a Country")) {
+				linksTA.setText("Please select where you are going to");
+			}
+			else {
+				linksTA.setText("Top links for traveling from " + from + " to " + to);
+			} // end of else
+			//linksTA.append(from + "\n");
+			//linksTA.append(to);
+			//System.out.println(from);	
+			//System.out.println(to);	
 		}
 	}
 	
