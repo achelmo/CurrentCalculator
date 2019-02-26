@@ -42,7 +42,7 @@ public class CurrentCalculator extends JFrame{
 	
 	public JComboBox<String> fromCB, toCB;
 	private JLabel fromL, toL;
-	private JButton calculateB;
+	private JButton calculateB, resetB;
 	private JTextArea linksTA;
 	
 	public CurrentCalculator() {
@@ -52,6 +52,8 @@ public class CurrentCalculator extends JFrame{
 		
 		setTitle("Current Calculator");
 		setSize(WIDTH, HEIGHT);
+		
+		String[] countriesFrom = {"Select a Country","United States of America (USA)"};
 		
 		String[] countries = { "Select a Country",
 				
@@ -68,13 +70,17 @@ public class CurrentCalculator extends JFrame{
 				"British Virgin Islands","Brunei","Bulgaria","Burkina Faso",
 				"Burma (officially Myanmar)","Burundi",
 				
-				"Cambodia","Cameroon","Canada","Canary Islands","Cape Verde (in Portuguese: Cabo Verde)",
-				"Cayman Islands","Central African Republic","Chad",
-				"Channel Islands (Guernsey & Jersey)","Chile","China, People’s Republic of",
+				"Cambodia","Cameroon","Canada","Canary Islands",
+				"Cape Verde (in Portuguese: Cabo Verde)","Cayman Islands",
+				"Central African Republic","Chad",
+				"Channel Islands (Guernsey & Jersey)","Chile",
+				"China, People’s Republic of",
 				"Christmas Island","Cocos (Keeling) Islands","Colombia",
-				"Comoros","Congo, Democratic Republic of the (Congo-Kinshasa)","Congo, Republic of the (Congo-Brazzaville)",
+				"Comoros","Congo, Democratic Republic of the (Congo-Kinshasa)",
+				"Congo, Republic of the (Congo-Brazzaville)",
 				"Cook Islands","Costa Rica","Côte d’Ivoire (Ivory Coast)","Croatia",
-				"Cuba","Curaçao","Cyprus","Cyprus, North (unrecognised, self-declared state)",
+				"Cuba","Curaçao","Cyprus",
+				"Cyprus, North (unrecognised, self-declared state)",
 				"Czechia (Czech Republic)",
 				
 				"Denmark","Djibouti","Dominica","Dominican Republic",
@@ -154,12 +160,15 @@ public class CurrentCalculator extends JFrame{
 				"test",
 				"test1"};
 		
-		fromCB = new JComboBox <String> (countries);
+		
+		fromCB = new JComboBox <String> (countriesFrom);
 		toCB = new JComboBox <String> (countries);
 		fromL = new JLabel("From:");
 		toL = new JLabel("To:");
 		calculateB = new JButton("Calculate");
 		calculateB.addActionListener(new Calculate());
+		resetB = new JButton("Reset");
+		resetB.addActionListener(new Reset());
 		linksTA = new JTextArea(6, 30);
 		
 		Container pane = getContentPane();
@@ -174,8 +183,10 @@ public class CurrentCalculator extends JFrame{
 		fromL.setSize(50, 35);
 		toL.setLocation(300, 0);
 		toL.setSize(50, 35);
-		calculateB.setLocation(0, 100);
+		calculateB.setLocation(50, 100);
 		calculateB.setSize(100, 35);
+		resetB.setLocation(200, 100);
+		resetB.setSize(100, 35);
 		linksTA.setLocation(0, 200);
 		linksTA.setSize(600,200);
 		
@@ -186,6 +197,7 @@ public class CurrentCalculator extends JFrame{
 		pane.add(fromL);
 		pane.add(toL);
 		pane.add(calculateB);
+		pane.add(resetB);
 		pane.add(linksTA);
 		
 		setVisible(true);
@@ -200,10 +212,13 @@ public class CurrentCalculator extends JFrame{
 			String to = String.valueOf(toCB.getSelectedItem());
 			linksTA.setText("");
 			if(from.equals("Select a Country")) {
-				linksTA.setText("Please select where you are from");
+				linksTA.setText("Please select where you are from!");
 			} // end of if
 			else if (to.equals("Select a Country")) {
-				linksTA.setText("Please select where you are going to");
+				linksTA.setText("Please select where you are going to!");
+			}
+			else if (from.equals(to)) {
+				linksTA.setText("Cannot travel to current location!");
 			}
 			else {
 				linksTA.setText("Top links for traveling from " + from + " to " + to);
@@ -213,6 +228,16 @@ public class CurrentCalculator extends JFrame{
 			//linksTA.append(to);
 			//System.out.println(from);	
 			//System.out.println(to);	
+		}
+	}
+	
+	private class Reset  implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			linksTA.setText("");
+			fromCB.setSelectedItem("Select a Country");
+			toCB.setSelectedItem("Select a Country");
+		
 		}
 	}
 	
