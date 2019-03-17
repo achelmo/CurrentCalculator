@@ -40,6 +40,8 @@ public class CurrentCalculator extends JFrame{
 	private static int WIDTH = 800;
 	private static int HEIGHT = 600;
 	
+	String temp; 
+	
 	public JComboBox<String> fromCB, toCB;
 	private JLabel fromL, toL;
 	private JButton calculateB, resetB;
@@ -53,9 +55,10 @@ public class CurrentCalculator extends JFrame{
 		setTitle("Current Calculator");
 		setSize(WIDTH, HEIGHT);
 		
-		String[] countriesFrom = {"Select a Country","United States of America (USA)"};
+		String[] countriesFrom = {"Select a Country","United States of America (USA)", "test", "test1"};
 		
-		String[] countries = { "Select a Country",
+		String[] countries = { "Select a Country","test",
+				"test1",
 				
 				"Afghanistan","Albania","Algeria",
 				"American Samoa","Andorra","Angola","Anguilla",
@@ -155,10 +158,9 @@ public class CurrentCalculator extends JFrame{
 				
 				"Yemen",
 				
-				"Zambia","Zimbabwe",
+				"Zambia","Zimbabwe"
 				
-				"test",
-				"test1"};
+				};
 		
 		
 		fromCB = new JComboBox <String> (countriesFrom);
@@ -221,9 +223,30 @@ public class CurrentCalculator extends JFrame{
 				linksTA.setText("Cannot travel to current location!");
 			}
 			else {
-				linksTA.setText("Top links for traveling from " + from + " to " + to);
-				//cc.createConnection();
+				linksTA.setText("Top links for traveling from " + from + " to " + to + "\n");
+				createConnection();
 			} // end of else
+				
+//				
+				
+//				java.sql.Statement stmt = con.createStatement();
+//				ResultSet rs = ((java.sql.Statement) stmt).executeQuery("SELECT * FROM countrylinks WHERE "
+//						+ "countryFrom='"+ a +"'" + "AND countryTo='"+b+"'");
+//				
+//				
+//				while(rs.next()) {
+//					System.out.println("Links for traveling from " + rs.getString("countryFrom")+" to " +rs.getString("countryTo"));
+//					String name = rs.getString("link1");
+//					String name1 = rs.getString("link2");
+//					String name2 = rs.getString("link3");
+//					System.out.println(name);
+//					System.out.println(name1);
+//					System.out.println(name2);
+//					System.out.println();
+//					}
+				
+				//cc.createConnection();
+			
 			//linksTA.append(from + "\n");
 			//linksTA.append(to);
 			//System.out.println(from);	
@@ -255,30 +278,63 @@ public class CurrentCalculator extends JFrame{
 			//load the driver
 			Class.forName("com.mysql.jdbc.Driver");
 			//establish the connection
+			// change as needed
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb","root","root");
 			
 			//create a statement object
 			java.sql.Statement stmt = con.createStatement();
+			java.sql.Statement stmt2 = con.createStatement();
 			
-			String a = "test";
-			String b = "test1";
+			
+			String a = String.valueOf(fromCB.getSelectedItem());
+			String b = String.valueOf(toCB.getSelectedItem());
+			//String a = "test";
+			//String b = "test1";
 			
 			//create query
 			//ResultSet rs = ((java.sql.Statement) stmt).executeQuery("SELECT * FROM countrylinks");
 					//+ " WHERE countryFrom '"+ a +"' AND WHERE countryTo '" + b + "'");
 			
-			ResultSet rs = ((java.sql.Statement) stmt).executeQuery("SELECT * FROM countrylinks WHERE "
-					+ "countryFrom='"+ a +"'" + "AND countryTo='"+b+"'");
-			
+			ResultSet rs = ((java.sql.Statement) stmt).executeQuery("SELECT * FROM plugmap WHERE "
+					+ "countryName='"+ b +"'");
 			
 			while(rs.next()) {
-				System.out.println("Links for traveling from " + rs.getString("countryFrom")+" to " +rs.getString("countryTo"));
-				String name = rs.getString("link1");
-				String name1 = rs.getString("link2");
-				String name2 = rs.getString("link3");
+				//System.out.println("Links for traveling from " + rs.getString("countryFrom")+" to " +rs.getString("countryTo"));
+				temp = rs.getString("plugType");
+				//String name1 = rs2.getString("link2");
+				//String name2 = rs2.getString("link3");
+				//String name3 = rs2.getString("notes");
+				//linksTA.append(name +"\n" + name1 +"\n" + name2 +"\n" + name3);
+				//System.out.println(name);
+				//System.out.println(name1);
+				//System.out.println(name2);
+				//System.out.println(name3);
+				//System.out.println();
+			}
+			
+			System.out.println(temp);		
+			
+			
+			ResultSet rs2 = ((java.sql.Statement) stmt2).executeQuery("SELECT * FROM pluglinks WHERE "
+					+ "plugFrom='A''"+"'" + "AND plugTo='"+temp+"'");
+			
+			
+	//		ResultSet rs = ((java.sql.Statement) stmt).executeQuery("SELECT * FROM countrylinks WHERE "
+	//				+ "countryFrom='"+ a +"'" + "AND countryTo='"+b+"'");
+			
+			
+			while(rs2.next()) {
+				System.out.println("Links for traveling from " + a +" to " +b);
+				System.out.println("test");
+				String name = rs2.getString("link1");
+				String name1 = rs2.getString("link2");
+				String name2 = rs2.getString("link3");
+				//String name3 = rs2.getString("notes");
+				linksTA.append(name +"\n" + name1 +"\n" + name2 +"\n" );
 				System.out.println(name);
 				System.out.println(name1);
 				System.out.println(name2);
+				//System.out.println(name3);
 				System.out.println();
 			}
 			
@@ -293,7 +349,7 @@ public class CurrentCalculator extends JFrame{
 		
 		catch (SQLException e) {
 			Logger.getLogger(CurrentCalculator.class.getName()).log(Level.SEVERE,null,e);
-			System.out.println("fail2");
+			System.out.println("Something went wrong when connecting");
 		}
 	}
 
