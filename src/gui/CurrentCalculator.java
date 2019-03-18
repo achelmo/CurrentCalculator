@@ -315,29 +315,33 @@ public class CurrentCalculator extends JFrame{
 			System.out.println(temp);		
 			
 			
-			ResultSet rs2 = ((java.sql.Statement) stmt2).executeQuery("SELECT * FROM pluglinks WHERE "
-					+ "plugFrom='A''"+"'" + "AND plugTo='"+temp+"'");
+			
+//			ResultSet rs2 = ((java.sql.Statement) stmt2).executeQuery("SELECT * FROM pluglinks WHERE "
+//					+ "plugFrom='A''"+"'" + "AND plugTo='"+temp+"'");
 			
 			
 	//		ResultSet rs = ((java.sql.Statement) stmt).executeQuery("SELECT * FROM countrylinks WHERE "
 	//				+ "countryFrom='"+ a +"'" + "AND countryTo='"+b+"'");
+			ResultSet rs2 = ((java.sql.Statement) stmt2).executeQuery("SELECT * FROM pluglinks WHERE "
+			+ "plugFrom='A'AND plugTo='"+temp+"'");
 			
 			
+		//	System.out.println("Before while 2");
 			while(rs2.next()) {
 				System.out.println("Links for traveling from " + a +" to " +b);
-				System.out.println("test");
+		//		System.out.println("test");
 				String name = rs2.getString("link1");
 				String name1 = rs2.getString("link2");
 				String name2 = rs2.getString("link3");
 				//String name3 = rs2.getString("notes");
 				linksTA.append(name +"\n" + name1 +"\n" + name2 +"\n" );
-				System.out.println(name);
-				System.out.println(name1);
-				System.out.println(name2);
-				//System.out.println(name3);
+//				System.out.println(name);
+//				System.out.println(name1);
+//				System.out.println(name2);
+//				System.out.println(name3);
 				System.out.println();
 			}
-			
+		//	System.out.println("After while 2");
 			System.out.println("Database Connection Successfull!");
 			
 		} catch (ClassNotFoundException e) {
